@@ -41,12 +41,12 @@ class m190314_141316_create_carriers_table extends Migration
     {
         $this->insert('carriers', [
             'name' => 'Carrier 1',
-            'price_per_km' => 10,
+            'price_per_km' => 2,
         ]);
 
         $this->insert('carriers', [
             'name' => 'Carrier 2',
-            'price_per_km' => 8,
+            'price_per_km' => 1,
         ]);
     }
 }

@@ -15,28 +15,24 @@ class m190314_165012_create_schedule_table extends Migration
         $this->createTable('{{%schedule}}', [
             'id' => $this->primaryKey(),
             'carrier_id' => $this->integer()
-                ->unsigned()
                 ->notNull()
                 ->comment('Carrier id'),
             'route_id' => $this->integer()
                 ->notNull()
                 ->comment('Route id'),
-            'start_station_id' => $this->integer()
+            'name' => $this->string(255)
                 ->notNull()
-                ->comment('Start station id in route segment'),
-            'end_station_id' => $this->integer()
-                ->notNull()
-                ->comment('End station id in route segment'),
+                ->comment('Schedule name'),
             'start_date' => $this->dateTime()
                 ->notNull()
                 ->comment('Start date time segment'),
             'end_date' => $this->dateTime()
                 ->notNull()
                 ->comment('End date time segment'),
-            'price' => $this->smallInteger()
+            'total_price' => $this->smallInteger()
                 ->unsigned()
                 ->notNull()
-                ->comment('Price for segment'),
+                ->comment('Price for all route'),
         ], 'CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ENGINE=InnoDB');
 
         $this->createIndex(
@@ -45,13 +41,20 @@ class m190314_165012_create_schedule_table extends Migration
             'route_id'
         );
 
-        // Foreign key for route_stations table
         $this->addForeignKey(
-            'fk-schedule-stations_on_route',
+            'fk-schedule-route_id',
             'schedule',
-            ['route_id', 'start_station_id', 'end_station_id'],
-            'route_stations',
-            ['route_id', 'start_station_id', 'end_station_id']
+            'route_id',
+            'routes',
+            'id'
+        );
+
+        $this->addForeignKey(
+            'fk-schedule-carrier_id',
+            'schedule',
+            'carrier_id',
+            'carriers',
+            'id'
         );
     }
 }
